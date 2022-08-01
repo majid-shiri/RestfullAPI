@@ -19,10 +19,17 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1/')->group(function() {
     //Authenticatoin Routes
     Route::prefix('/auth')->group(function (){
-        Route::post('/register','App\Http\Controllers\API\V01\Auth\AuthController@register')->name('auth.register');
-        Route::post('/login','App\Http\Controllers\API\V01\Auth\AuthController@login')->name('auth.login');
-        Route::get('/user','App\Http\Controllers\API\V01\Auth\AuthController@user')->name('auth.user');
-        Route::post('/logout','App\Http\Controllers\API\V01\Auth\AuthController@logout')->name('auth.logout');
+        Route::post('/register','App\Http\Controllers\API\v1\Auth\AuthController@register')->name('auth.register');
+        Route::post('/login','App\Http\Controllers\API\v1\Auth\AuthController@login')->name('auth.login');
+        Route::get('/user','App\Http\Controllers\API\v1\Auth\AuthController@user')->name('auth.user');
+        Route::post('/logout','App\Http\Controllers\API\v1\Auth\AuthController@logout')->name('auth.logout');
     });
 
+    //Channel Routes
+    Route::prefix('/channel')->group(function (){
+        Route::get('/all','App\Http\Controllers\API\v1\Channel\ChannelController@getAllChannelList')->name('channel.all');
+        Route::post('/create','App\Http\Controllers\API\v1\Channel\ChannelController@createNewChannel')->name('channel.create');
+        Route::put('/update','App\Http\Controllers\API\v1\Channel\ChannelController@updateChannel')->name('channel.update');
+        Route::delete('/delete','App\Http\Controllers\API\v1\Channel\ChannelController@deleteChannel')->name('channel.delete');
+    });
 });

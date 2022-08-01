@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\API\V01\Auth;
+namespace App\Http\Controllers\API\v1\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -30,7 +32,7 @@ class AuthController extends Controller
 
         return response()->json([
           'message'=>"user created successfully"
-       ],201);
+       ],Response::HTTP_CREATED);
 
 
 
@@ -40,7 +42,7 @@ class AuthController extends Controller
      * Login User
      * @method GET
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws ValidationException
      */
     public function login(Request $request){
@@ -52,7 +54,7 @@ class AuthController extends Controller
 
         //Check User Credentials
         if(Auth::attempt($request->only(['email','password']))){
-            return response()->json(Auth::user(),200);
+            return response()->json(Auth::user(),Response::HTTP_OK);
         }
 
         throw ValidationException::withMessages([
@@ -62,7 +64,7 @@ class AuthController extends Controller
 
     public function user()
     {
-        return response()->json(Auth::user(),200);
+        return response()->json(Auth::user(),Response::HTTP_OK);
     }
 
     public function logout()
@@ -70,7 +72,7 @@ class AuthController extends Controller
         Auth::logout();
         return response()->json([
             'message'=>"logeed out successfuly"
-        ],200);
+        ],Response::HTTP_OK);
     }
 
 }

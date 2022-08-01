@@ -25,7 +25,7 @@ class CreateThreadsTable extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             //Best Answer ID
-            $table->unsignedBigInteger('best_answer_id');
+            $table->unsignedBigInteger('best_answer_id')->nullable();
             $table->boolean('flag');
             $table->timestamps();
         });
