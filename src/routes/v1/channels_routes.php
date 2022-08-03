@@ -11,7 +11,7 @@ Route::prefix('/channel')->group(function () {
         'getAllChannelList'
     ])->name('channel.all');
 
-    Route::middleware('can:channel management')->group(function (){
+    Route::middleware(['can:channel management','auth:sanctum'])->group(function (){
 
         Route::post('/create', [
             ChannelController::class,
