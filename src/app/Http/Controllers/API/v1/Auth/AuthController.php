@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,13 +29,14 @@ class AuthController extends Controller
 
 
        //insert User Into Database
-        resolve(UserRepository::class)->create($request);
+       $user=resolve(UserRepository::class)->create($request);
+       $defualtSuperAdminEmail = config('permission.defualt_super_admin_email');
+
+//       $user->email === $defualtSuperAdminEmail ? $user->assignRole('Super Admin'):$user->assignRole('User');
 
         return response()->json([
           'message'=>"user created successfully"
        ],Response::HTTP_CREATED);
-
-
 
     }
 
