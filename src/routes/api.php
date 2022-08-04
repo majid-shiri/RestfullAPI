@@ -20,6 +20,8 @@ Route::prefix('v1/')->group(function () {
     include __DIR__ . '/v1/auth_routes.php';
 //Channel Routes
     include __DIR__ . '/v1/channels_routes.php';
+//Thread Routes
+    include __DIR__ . '/v1/threads_routes.php';
 
 
 });
