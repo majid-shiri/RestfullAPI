@@ -107,6 +107,7 @@ class ChannelTest extends TestCase
 
     public function test_delete_channel()
     {
+        $this->withExceptionHandling();
         $this->registerRolesAndPermissions();
         $user = User::factory()->create();
         Sanctum::actingAs($user);
@@ -117,6 +118,7 @@ class ChannelTest extends TestCase
         ]);
         $response->assertStatus(Response::HTTP_OK);
 
+        $this->assertTrue(Channel::where('id',$channel->id)->count()===0);
     }
 }
 
