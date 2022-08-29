@@ -13,6 +13,11 @@ use function Symfony\Component\Translation\t;
 
 class ThreadController extends Controller
 {
+    public function __construct(){
+        $this->middleware(['user_block'])->except([
+            'index','show'
+        ]);
+    }
     /**
      * show All list Threads
      * @return JsonResponse

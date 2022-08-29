@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\UserBlock;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'role'=>RoleMiddleware::class,
         'permission'=>PermissionMiddleware::class,
         'role_or_permission'=>RoleOrPermissionMiddleware::class,
+        'user_block'=>UserBlock::class,
     ];
 }

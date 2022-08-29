@@ -6,6 +6,7 @@ namespace Tests\Feature\API\v1\Thread;
 use App\Models\Answer;
 use App\Models\Thread;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class AnswerTest extends TestCase
 {
-
+    use RefreshDatabase;
     /**
      * @test
      */
@@ -27,6 +28,8 @@ class AnswerTest extends TestCase
      */
     public function create_answer_shoulde_be_validated()
     {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
         $response = $this->postJson(route('answers.store'), []);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -56,11 +59,30 @@ class AnswerTest extends TestCase
     /**
      * @test
      */
+    public function user_score_will_increase_by_submit_new_answer(){
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+        $thread = Thread::factory()->create();
+        $response = $this->postJson(route('answers.store'), [
+            'content' => 'test',
+            'thread_id' => $thread->id,
+        ]);
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $user->refresh();
+        $this->assertEquals(10,$user->score);
+    }
+
+
+    /**
+     * @test
+     */
     public function update_answer_shoulde_be_validated()
     {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
         $answer = Answer::factory()->create();
         $response = $this->putJson(route('answers.update', [$answer]), []);
-
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonValidationErrors(['content']);
     }
@@ -74,6 +96,7 @@ class AnswerTest extends TestCase
         Sanctum::actingAs($user);
         $answer = Answer::factory()->create([
             'content' => 'test',
+            'user_id'=>$user->id
         ]);
         $response = $this->putJson(route('answers.update', [$answer]), [
             'content' => 'test2',
@@ -94,7 +117,9 @@ class AnswerTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $answer = Answer::factory()->create();
+        $answer = Answer::factory()->create([
+            'user_id'=>$user->id
+        ]);
 
         $response=$this->delete(route('answers.destroy',[$answer]));
 
