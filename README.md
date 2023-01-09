@@ -1,3 +1,3 @@
-﻿# test and learning with sample laracast
+﻿# sample laracast site
 Api Laravel+ docker-compose
  
